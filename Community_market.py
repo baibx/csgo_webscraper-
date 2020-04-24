@@ -1,12 +1,15 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
+
+
 #execute = r'C:\Users\baizh\AppData\Local\Programs\Python\Python38-32\geckodriver.exe'
 
-'''options = webdriver.FirefoxOptions()
-options.add_argument('-headless')
-driver = webdriver.Firefox(executable_path=execute, firefox_options=options)'''
+#options = webdriver.FirefoxOptions()
+#options.add_argument('-headless')
+#driver = webdriver.Firefox(executable_path=execute, firefox_options=options)
 
+#driver = webdriver.Firefox()
 #search filtered by csgo
 
 
@@ -22,7 +25,7 @@ def filtering():
 
     weapon = float(input("Input the number that corresponds to the weapon"))
     if (weapon == 0):
-        awp = search + "awp&appid=730"
+        awp = search + 'awp&appid=730'
         return awp
     elif (weapon == 1):
         ak47 = search + "ak47&appid=730"
@@ -124,7 +127,25 @@ def filtering():
         xm = search + "xm1014&appid=730"
         return xm
 
-print(filtering())
+url = filtering()
+driver.get(url)
+
+search_box = driver.find_element_by_xpath('//*[@id="findItemsSearchBox"]')
+search_box.click()
+search_box.send_keys(input("What are you looking for?"))
+
+searching = driver.find_element_by_xpath('//*[@id="findItemsSearchSubmit"]')
+searching.click()
+
+
+
+
+
+
+
+
+driver.quit()
+
 
 
 
