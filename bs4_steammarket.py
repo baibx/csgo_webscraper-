@@ -140,20 +140,22 @@ csv_writer = csv.writer(csv_file)
 csv_writer.writerow(['Name of Item', 'Sale Price'])
 
 for name in soup.find_all('span', class_='market_listing_item_name'):
-    print(name.text)
     csv_writer.writerow([name.text])
 
 for price in soup.find_all('span', class_='sale_price'):
-    print(price.text)
-    csv_writer.writerow(["", price.text])
-
-
-
-
-
+    csv_writer.writerow([price.text])
 
 csv_file.close()
 
+f = open('steamscrape.csv')
+csv_f = csv.reader(f)
+
+prices1 = []
+
+for prices in csv_f:
+    prices1.append(prices)
+
+print(prices1)
 
 
 
