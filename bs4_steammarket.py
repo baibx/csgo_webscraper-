@@ -155,7 +155,23 @@ prices1 = []
 for prices in csv_f:
     prices1.append(prices)
 
+#returns a list of lists need to access this
 print(prices1)
+
+results = soup.find('div', class_='market_paging_summary ellipsis')
+
+# can't split NoneTypes but can split .text
+isolate_results = results.text.split('-')
+
+#isolated_variable now contains the amount of results shown on the page
+isolate_results1 = isolate_results[1].split(' of')
+isolated_variable = int(isolate_results1[0])
+
+
+
+
+
+
 
 
 
