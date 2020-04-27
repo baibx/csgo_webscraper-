@@ -147,7 +147,7 @@ for price in soup.find_all('span', class_='sale_price'):
 
 csv_file.close()
 
-f = open('steamscrape.csv')
+f = open('steamscrape.csv', 'r+')
 csv_f = csv.reader(f)
 
 prices1 = []
@@ -166,6 +166,24 @@ isolate_results = results.text.split('-')
 #isolated_variable now contains the amount of results shown on the page
 isolate_results1 = isolate_results[1].split(' of')
 isolated_variable = int(isolate_results1[0])
+
+def pricing(x):
+    first_price = (x * 2) + 2
+    return first_price
+
+csv_file = open('steamscrape_formatted.csv', 'w')
+csv_writer = csv.writer(csv_file)
+csv_writer.writerow(['Name of Item', 'Sale Price'])
+
+#prices1 here is the list that we have built above
+for prices in range(0, isolated_variable):
+    csv_writer.writerow([prices1[2 + (2 * prices)], prices1[pricing(isolated_variable) + (2 * prices)]])
+
+
+
+
+
+
 
 
 
