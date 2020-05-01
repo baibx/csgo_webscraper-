@@ -3,7 +3,7 @@ from urllib.request import Request, urlopen
 
 # filtering by categories
 category_search = ["guns", "knives", "agents", "graffiti", "gloves", "music-kits", "collectibles(pins)", "patch",
-                   "pass"]
+                   "pass", "sticker"]
 
 guns = 'https://steamcommunity.com/market/search?category_730_ItemSet%5B0%5D=any&category_730_ProPlayer%5B0%5D=any&category_730_StickerCapsule%5B0%5D=any&category_730_TournamentTeam%5B0%5D=any&category_730_Weapon%5B0%5D=any&category_730_Exterior%5B0%5D=tag_WearCategory2&category_730_Exterior%5B1%5D=tag_WearCategory1&category_730_Exterior%5B2%5D=tag_WearCategory4&category_730_Exterior%5B3%5D=tag_WearCategory3&category_730_Exterior%5B4%5D=tag_WearCategory0&category_730_Exterior%5B5%5D=tag_WearCategoryNA&appid=730'
 
@@ -22,6 +22,8 @@ collect = 'https://steamcommunity.com/market/search?q=&category_730_ItemSet%5B%5
 patch = 'https://steamcommunity.com/market/search?q=&category_730_ItemSet%5B%5D=any&category_730_ProPlayer%5B%5D=any&category_730_StickerCapsule%5B%5D=any&category_730_TournamentTeam%5B%5D=any&category_730_Weapon%5B%5D=any&category_730_Type%5B%5D=tag_CSGO_Tool_Patch&appid=730'
 
 pass1 = 'https://steamcommunity.com/market/search?q=&category_730_ItemSet%5B%5D=any&category_730_ProPlayer%5B%5D=any&category_730_StickerCapsule%5B%5D=any&category_730_TournamentTeam%5B%5D=any&category_730_Weapon%5B%5D=any&category_730_Type%5B%5D=tag_CSGO_Type_Ticket&appid=730'
+
+sticker = 'https://steamcommunity.com/market/search?q=&category_730_ItemSet%5B%5D=any&category_730_ProPlayer%5B%5D=any&category_730_StickerCapsule%5B%5D=any&category_730_TournamentTeam%5B%5D=any&category_730_Weapon%5B%5D=any&category_730_Type%5B%5D=tag_CSGO_Tool_Sticker&appid=730'
 
 def urlbuilder(url):
     amount_of_keywords = float(input("How many keywords? Please input as a number and not a word. Ex. 1 instead of one"))
@@ -69,6 +71,8 @@ elif choice == 7:
     url = urlbuilder(patch)
 elif choice == 8:
     url = urlbuilder(pass1)
+elif choice == 9:
+    url = urlbuilder(sticker)
 
 #finally have the url, now can scrape using beautifulsoup
 
@@ -80,18 +84,19 @@ soup = bs.BeautifulSoup(webpage, 'lxml')
 
 #here im making the file which we will be saving all of our information on
 import csv
-csv_file = open('steamscrape.csv', 'w')
-csv_writer = csv.writer(csv_file)
-csv_writer.writerow(['Name of Item', 'Sale Price'])    #making the first two columns of the spreedsheet
+with open('steamscrape.csv', "w", encoding="utf-8") as csv_file:   #using with open instead of just open lets you process the weird symbols better from the html
+    csv_writer = csv.writer(csv_file)
+    csv_writer.writerow(['Name of item', 'Sale Price'])  #making the first two columns of the spreedsheet
 
-#searching the html of the site and writing it to the csv file
-for name in soup.find_all('span', class_='market_listing_item_name'):
-    csv_writer.writerow([name.text])
+    for name in soup.find_all('span', class_='market_listing_item_name'):
+        csv_writer.writerow([name.text])
+        # searching the html of the site and writing it to the csv file
+    for price in soup.find_all('span', class_='sale_price'):
+        csv_writer.writerow([price.text])
 
-for price in soup.find_all('span', class_='sale_price'):
-    csv_writer.writerow([price.text])      #this is however formatted all into one row
-
+ #this is however formatted all into one row
 csv_file.close()
+
 #making a list to store our values in to access later
 prices1 = []
 
